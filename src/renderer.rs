@@ -1,6 +1,7 @@
 // engine renderer
 
 use std::collections::{HashMap, HashSet};
+use wgpu::PresentMode;
 use winit::window::Window;
 use wgpu::util::DeviceExt;
 use glyphon::{FontSystem, SwashCache, TextAtlas, TextArea, TextRenderer as GlyphRenderer, TextBounds, Resolution, Buffer, Metrics, Shaping, Attrs, Family};
@@ -158,9 +159,17 @@ impl<'a> Renderer<'a> {
 
 let size = window.inner_size();
         let mut config = surface.get_default_config(&adapter, size.width, size.height).unwrap();
-        
-        
-        config.present_mode = wgpu::PresentMode::Immediate;
+
+        let available_present_modes = surface.get_capabilities(&adapter).present_modes;
+
+        config.present_mode = [
+            // presentation preference order.
+            PresentMode::Immediate,
+            PresentMode::Mailbox,
+        ]
+        .into_iter()
+        .find(|&mode| available_present_modes.contains(&mode))
+        .unwrap_or(PresentMode::Fifo);
         
         surface.configure(&device, &config);
 

@@ -1,4 +1,21 @@
-## 🛠 Technical Architecture & Engineering Deep Dive
+
+<p align="center">
+  <img src="resources/planet.png" alt="Terrain Overview" width="100%">
+</p>
+
+---
+
+## Key Features
+
+This project is a high-performance voxel engine built from scratch in **Rust**, capable of generating fully explorable, spherical planets in real-time.
+
+*   **Spherical Terrain:** Generates a massive, round planet using advanced coordinate mapping (Nowell's Algorithm), eliminating the distortion found in standard cube-map projections.
+*   **Multithreaded & Async:** Heavy computational tasks like noise generation and mesh tessellation are offloaded to background thread pools, ensuring a buttery-smooth frame rate.
+*   **Custom Rendering Engine:** Powered by **wgpu**, featuring cascaded shadow maps, exponential atmospheric fog, and HDR tone mapping for photorealistic visuals.
+*   **Dynamic LOD System:** Implements a recursive Quadtree-based Level of Detail system that renders high-fidelity voxels near the player while optimizing geometry at the horizon.
+*   **Custom Physics Engine:** A specialized physics solver designed for spherical gravity, handling collision detection and character orientation on a curved surface.
+
+## Deep Dive for Those Interested
 
 ### 1. Core Architecture & Memory Management (System Design)
 The engine is built on a **multithreaded ECS-like architecture** designed for high-throughput procedural generation, prioritizing thread safety and zero-cost abstractions.

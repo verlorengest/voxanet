@@ -144,8 +144,10 @@ impl<'a> Renderer<'a> {
         // log GPU info
         crate::system_diagnostics::SystemDiagnostics::log_gpu(&adapter.get_info());
 
+        let target_buffer_size: u64 = 8 * 1024 * 1024 * 1024;
         let mut limits = adapter.limits();
-        limits.max_buffer_size = 8_u64 * 1024 * 1024 * 1024; 
+        // we are requiring a maximum of 8gb but we take as much as the platform is capable of
+        limits.max_buffer_size = target_buffer_size.min(limits.max_buffer_size);
 
         let mut features = wgpu::Features::empty();
         if adapter.features().contains(wgpu::Features::POLYGON_MODE_LINE) {
